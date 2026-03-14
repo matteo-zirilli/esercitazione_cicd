@@ -6,8 +6,8 @@ on: push
 jobs:
   il_mio_esperimento:
 
-  runs-on: ubuntu-latest
+    runs-on: ubuntu-latest
 
-  steps:
-    - name: Stampa il segreto
-      run: echo "${{ secrets.MY_SECRET }}"
+    steps:
+      - name: Stampa il segreto
+        run: echo "${{ secrets.MY_SECRET }}"
