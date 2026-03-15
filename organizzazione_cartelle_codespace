@@ -23,3 +23,36 @@ IL_MIO_PROGETTO_ROOT/
 ├── .env.example                    <-- 6. LA MAPPA DEI SEGRETI LOCALI
 ├── .gitignore                      <-- 7. LO SCUDO DI SICUREZZA
 └── README.md                       <-- 8. LA CARTA D'IDENTITÀ DEL PROGETTO
+
+
+
+
+
+
+
+IL_MIO_PROGETTO_ROOT/
+│
+├── .github/                        
+│   └── workflows/
+│       └── deploy_prod.yml         (Ora scaricherà il modello da MLflow prima della build!)
+│
+├── app/                            <-- IL CODICE DELL'API (IN PRODUZIONE)
+│   ├── main.py                     (FastAPI: carica il modello ed esegue le previsioni)
+│   ├── requirements.txt            
+│   └── Dockerfile                  (La ricetta per l'API)
+│
+├── training/                       <-- IL LABORATORIO DEL DATA SCIENTIST
+│   ├── train.py                    (Lo script che allena il modello e lo invia a MLflow)
+│   └── dati_addestramento.csv      (I dati grezzi: DA IGNORARE SU GIT!)
+│
+├── mlruns/                         <-- IL DATABASE LOCALE DI MLFLOW 
+│   └── ...                         (Qui MLflow salva grafici e modelli in locale. DA IGNORARE SU GIT!)
+│
+├── infrastructure/                 
+│   └── docker-compose.prod.yml     
+│
+├── docker-compose.yml              <-- IL DIRETTORE D'ORCHESTRA LOCALE
+│                                   (Ora avvia: 1. FastAPI, 2. Database, 3. Server MLflow)
+│
+├── .env.example                    
+└── .gitignore                      <-- AGGIORNATO: Ora blocca 'mlruns/' e '*.csv'
