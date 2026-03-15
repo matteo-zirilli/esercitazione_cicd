@@ -1,4 +1,4 @@
-graph TD
+"""graph TD
     %% Nodo Principale
     Start[IL TUO PROGETTO] -->|1. Il Motore| Python[Python & Dati]
     Start -->|2. L'Ambiente| Docker[Docker & Container]
@@ -40,4 +40,4 @@ graph TD
     classDef github fill:#f0f4c3,stroke:#afb42b,stroke-width:2px;
     class Python,Py1,Py2,Py3,Reshape python;
     class Docker,D1,D2,D3,D4,D5,D6 docker;
-    class CI_CD,GA1,GA2,GA3,Steps,S1,S2,Sec1,Sec2 github;
+    class CI_CD,GA1,GA2,GA3,Steps,S1,S2,Sec1,Sec2 github;"""
