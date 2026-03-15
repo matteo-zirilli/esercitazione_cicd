@@ -1,0 +1,25 @@
+IL_MIO_PROGETTO_ROOT/
+│
+├── .github/                        <-- 1. IL CERVELLO DELL'AUTOMAZIONE
+│   └── workflows/
+│       ├── test_e_build.yml        (La CI: controlla il codice a ogni push)
+│       └── deploy_prod.yml         (La CD: manda il codice sul server)
+│
+├── app/                            <-- 2. IL CUORE (IL TUO CODICE)
+│   ├── main.py                     (Il file principale di FastAPI/Python)
+│   ├── modelli_ml/                 (Cartella con i tuoi modelli salvati)
+│   ├── requirements.txt            (Lista delle librerie, es. scikit-learn, pandas)
+│   └── Dockerfile                  (La ricetta per "inscatolare" SOLO questa cartella app)
+│
+├── tests/                          <-- 3. IL CONTROLLO QUALITÀ
+│   ├── test_api.py                 (Script che simulano un utente che usa l'app)
+│   └── test_modello.py             (Verifica che la matematica del modello sia giusta)
+│
+├── infrastructure/                 <-- 4. LE REGOLE PER LA PRODUZIONE (IL SERVER)
+│   ├── docker-compose.prod.yml     (Il compose per il server: riavvii automatici, porte chiuse)
+│   └── nginx_config/               (Regole per il traffico web e la sicurezza)
+│
+├── docker-compose.yml              <-- 5. IL DIRETTORE D'ORCHESTRA LOCALE (SVILUPPO)
+├── .env.example                    <-- 6. LA MAPPA DEI SEGRETI LOCALI
+├── .gitignore                      <-- 7. LO SCUDO DI SICUREZZA
+└── README.md                       <-- 8. LA CARTA D'IDENTITÀ DEL PROGETTO
