@@ -1,0 +1,43 @@
+graph TD
+    %% Nodo Principale
+    Start[IL TUO PROGETTO] -->|1. Il Motore| Python[Python & Dati]
+    Start -->|2. L'Ambiente| Docker[Docker & Container]
+    Start -->|3. L'Automazione| CI_CD[GitHub Actions CI/CD]
+
+    %% Sezione Python
+    Python --> Py1[Dati per scikit-learn]
+    Py1 -->|Formato Errato| Py2[Lista 1D: shape 3,]
+    Py1 -->|Formato Corretto| Py3[Matrice 2D: shape 3, 1]
+    Py2 -.->|Usa per convertire| Reshape[np.array.reshape -1, 1]
+    Reshape -.-> Py3
+
+    %% Sezione Docker
+    Docker --> D1[Dockerfile]
+    D1 -->|Costruisce| D2[Immagine]
+    D2 -->|Esegue| D3[Container API]
+    
+    Docker --> D4[docker-compose.yml]
+    D4 -->|Orchestra| D3
+    D4 -->|Orchestra| D5[Container Database]
+    D4 -->|Salva i dati| D6[(Volumi)]
+
+    %% Sezione GitHub Actions
+    CI_CD -->|Interruttore| GA1[Cartella .github/workflows/]
+    GA1 -->|Regola| GA2[on: push]
+    GA1 -->|Motore| GA3[runs-on: ubuntu-latest]
+    
+    GA3 -->|Passaggi| Steps{Cosa fa il Runner?}
+    Steps -->|Actions pre-fabbricate| S1[uses: actions/...]
+    Steps -->|Comandi manuali| S2[run: echo ...]
+    
+    %% La Gestione dei Segreti
+    S2 -->|Estrae| Sec1[secrets.MY_SECRET]
+    Sec1 -->|Filtro di Sicurezza GitHub| Sec2[Stampa *** nei Log]
+
+    %% Stili per rendere la mappa più bella
+    classDef python fill:#f9f0ff,stroke:#8e44ad,stroke-width:2px;
+    classDef docker fill:#e1f5fe,stroke:#0288d1,stroke-width:2px;
+    classDef github fill:#f0f4c3,stroke:#afb42b,stroke-width:2px;
+    class Python,Py1,Py2,Py3,Reshape python;
+    class Docker,D1,D2,D3,D4,D5,D6 docker;
+    class CI_CD,GA1,GA2,GA3,Steps,S1,S2,Sec1,Sec2 github;
