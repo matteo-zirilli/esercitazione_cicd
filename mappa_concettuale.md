@@ -1,43 +1,52 @@
-"""graph TD
-    %% Nodo Principale
-    Start[IL TUO PROGETTO] -->|1. Il Motore| Python[Python & Dati]
-    Start -->|2. L'Ambiente| Docker[Docker & Container]
-    Start -->|3. L'Automazione| CI_CD[GitHub Actions CI/CD]
+```mermaid
+graph LR
+    %% Stili per le aree
+    classDef locale fill:#e3f2fd,stroke:#1565c0,stroke-width:2px;
+    classDef cicd fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px;
+    classDef prod fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px;
+    classDef db fill:#fff3e0,stroke:#e65100,stroke-width:2px;
 
-    %% Sezione Python
-    Python --> Py1[Dati per scikit-learn]
-    Py1 -->|Formato Errato| Py2[Lista 1D: shape 3,]
-    Py1 -->|Formato Corretto| Py3[Matrice 2D: shape 3, 1]
-    Py2 -.->|Usa per convertire| Reshape[np.array.reshape -1, 1]
-    Reshape -.-> Py3
+    %% 1. SVILUPPO LOCALE
+    subgraph Locale [1. PC Sviluppatore / Codespace]
+        Code[Codice Python / App]
+        DF[Dockerfile <br> 'La Ricetta']
+        DC_Dev[docker-compose.yml <br> 'Sviluppo Locale']
+        
+        Code -.-> DF
+        DF -.-> DC_Dev
+    end
 
-    %% Sezione Docker
-    Docker --> D1[Dockerfile]
-    D1 -->|Costruisce| D2[Immagine]
-    D2 -->|Esegue| D3[Container API]
+    %% 2. GITHUB ACTIONS (CI/CD)
+    subgraph CI_CD [2. GitHub Actions - Pipeline CI/CD]
+        Push((Git Push))
+        Test{Test Automatici <br> Tutto OK?}
+        Build[Build Immagine Docker]
+        Registry[(Docker Hub / Registry <br> 'Magazzino Immagini')]
+        
+        Push --> Test
+        Test -->|Sì| Build
+        Test -->|No| Stop[Blocca tutto e avvisa il dev]
+        Build -->|Carica| Registry
+    end
+
+    %% 3. SERVER DI PRODUZIONE
+    subgraph Produzione [3. Server di Produzione / Cloud]
+        DC_Prod[docker-compose.prod.yml <br> 'File per Server']
+        ServerPull[Il server scarica <br> la nuova immagine]
+        RunApp[Container API / Web]
+        RunDB[(Container Database)]
+        
+        DC_Prod --> ServerPull
+        ServerPull --> RunApp
+        RunApp <-->|Comunica| RunDB
+    end
+
+    %% CONNESSIONI GLOBALI
+    Locale -->|Invia codice + YAML| Push
+    Registry -->|Rilascia immagine| ServerPull
     
-    Docker --> D4[docker-compose.yml]
-    D4 -->|Orchestra| D3
-    D4 -->|Orchestra| D5[Container Database]
-    D4 -->|Salva i dati| D6[(Volumi)]
-
-    %% Sezione GitHub Actions
-    CI_CD -->|Interruttore| GA1[Cartella .github/workflows/]
-    GA1 -->|Regola| GA2[on: push]
-    GA1 -->|Motore| GA3[runs-on: ubuntu-latest]
-    
-    GA3 -->|Passaggi| Steps{Cosa fa il Runner?}
-    Steps -->|Actions pre-fabbricate| S1[uses: actions/...]
-    Steps -->|Comandi manuali| S2[run: echo ...]
-    
-    %% La Gestione dei Segreti
-    S2 -->|Estrae| Sec1[secrets.MY_SECRET]
-    Sec1 -->|Filtro di Sicurezza GitHub| Sec2[Stampa *** nei Log]
-
-    %% Stili per rendere la mappa più bella
-    classDef python fill:#f9f0ff,stroke:#8e44ad,stroke-width:2px;
-    classDef docker fill:#e1f5fe,stroke:#0288d1,stroke-width:2px;
-    classDef github fill:#f0f4c3,stroke:#afb42b,stroke-width:2px;
-    class Python,Py1,Py2,Py3,Reshape python;
-    class Docker,D1,D2,D3,D4,D5,D6 docker;
-    class CI_CD,GA1,GA2,GA3,Steps,S1,S2,Sec1,Sec2 github;"""
+    %% Applicazione Stili
+    class Locale locale;
+    class CI_CD cicd;
+    class Produzione prod;
+    class Registry,RunDB db;
